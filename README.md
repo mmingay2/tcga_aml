@@ -16,7 +16,7 @@ Then click the "run app" button in the top right hand corner to see the app in a
 ![run app](https://github.com/mmingay2/tcga_aml/blob/master/img/runapp.png "Run App")
 
 
-Make sure you have [RStudio](https://rstudio.com/products/rstudio/download/) the proper libraries installed! These loaded on lines 1-9 in the `app.R` file. 
+Make sure you have [RStudio](https://rstudio.com/products/rstudio/download/) the proper libraries installed! These are listed and loaded on lines 1-9 in the `app.R` file. 
 
 For example one could install the package `dplyr` by running `install.packages("dplyr")` in RStudio.
 
