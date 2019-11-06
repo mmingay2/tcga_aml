@@ -1,10 +1,12 @@
 name: tcga_github
 title:
+username:
 account: mmingay2
 server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
 appId: 175594
-bundleId: 805178
+bundleId: 2569577
 url: https://mmingay2.shinyapps.io/tcga_github/
-when: 1493232421.12807
+when: 1573076186.00702
 asMultiple: FALSE
 asStatic: FALSE

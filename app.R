@@ -48,12 +48,9 @@ ui <-
                       # Create a mainPanel to display the dynamic plot
                         mainPanel(
                                 #this function is needed to display plots created in the server function
-                                plotOutput(outputId = "mutplot", 
+                                plotOutput(
                                   # display the plot called `output$mutplot` defined in the server function
-                                  outputId = "mutplot", 
-                                           width = "100%", height = "100%",
-                                           #creates `input$plot_hover` and `input$plot_click` variables from a user's hover and click activity, resp.
-                                           hover = "plot_hover", click = "plot_click")
+                                  outputId = "mutplot", width = "100%", height = "100%")
                         ) #end of mainPanel
               )#end of FluidPage and UI element
 
@@ -118,7 +115,7 @@ server <- shinyServer(function(input, output) {
     print <- mutreact() %>% select(id,mutant) %>% unique() %>% 
       group_by(mutant) %>% tally() %>% data.frame()
     colnames(print) <- c("Mutated Gene", "# of patients")
-    print })
+    print})
 })
 
 #############################################################################################################################################################
