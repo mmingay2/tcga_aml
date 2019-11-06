@@ -8,9 +8,14 @@ library(reshape2)
 library(data.table)
 library(dplyr)
 
+#############################################################################################################################################################
 #load datasets
+# contains gene expression data
 rnamelt <- data.frame(fread("./rnamelt.txt"))
+# contains patient id <-> mutation status
 tcga_mut <- data.frame(fread("./tcga_mut.txt"))
+
+#############################################################################################################################################################
 
 # Define UI for application that will displays options, plots and interact with our users
 ui <- 
@@ -33,22 +38,26 @@ ui <-
                                       #what will be selected by default?
                                       selected = as.character(unique(tcga_mut$mutation))[c(4,50,258)]),
                                 #Same as above but assigning selected genes to `input$geneselect`
-                                selectInput(inputId = "geneselect", label = "Select Genes to Plot", choices = as.character(unique(rnamelt$gene)), multiple = T, selected = c("HOXA9", "CSF2RA", "KIT")),
-                                #This function will show a nicely table defined in the server function as output$presult
-                                tableOutput("presult")
+                                selectInput(inputId = "geneselect", label = "Select Genes to Plot", 
+                                            choices = as.character(unique(rnamelt$gene)), 
+                                            multiple = T, selected = c("HOXA9", "CSF2RA", "KIT")),
+                                #This function will show a nicely table defined in the server function as output$table
+                                tableOutput("table")
                       ),#End of SidebarPanel
               
                       # Create a mainPanel to display the dynamic plot
                         mainPanel(
                                 #this function is needed to display plots created in the server function
-                                plotOutput(
+                                plotOutput(outputId = "mutplot", 
                                   # display the plot called `output$mutplot` defined in the server function
                                   outputId = "mutplot", 
                                            width = "100%", height = "100%",
-                                           #creates `input$plot_hover` and `input$plot_click` variables depending on a user's cursor activity
+                                           #creates `input$plot_hover` and `input$plot_click` variables from a user's hover and click activity, resp.
                                            hover = "plot_hover", click = "plot_click")
                         ) #end of mainPanel
               )#end of FluidPage and UI element
+
+#############################################################################################################################################################
 
 # Define server logic required to apply user input to modify plots as `server`
 
@@ -71,14 +80,16 @@ server <- shinyServer(function(input, output) {
     select(id, status) %>% 
     unique() %>% data.frame()
     })
+  
   # create a reactive function that detects changes in `input$muts` and `input$geneselect` and updates accordingly
   mutreact <- reactive({
       select(tcga_mut, -aa_change, -mutation) %>% unique() %>%
       full_join(mutid(), by="id") %>%
       # group patients by `status`...if they don't have one of selected mutations they are "other"
       mutate(mutant=ifelse(is.na(status), yes = "other", no = status)) %>% 
+      # select mutant, id columns
       select(mutant, id) %>%
-      # join with gene expression counts
+      # join with gene expression values
       inner_join(genereact())
   })
   
@@ -87,7 +98,7 @@ server <- shinyServer(function(input, output) {
     filter(tcga_mut, mutation %in% input$muts) %>% group_by(id) %>% tally()
   })
 
-  # create the plot using the reactive data
+  # create the plot using the reactive data `mutreact()`
   output$mutplot <- renderPlot({
     mutreact() %>%
         ggplot(aes(x=mutant, y=logtag))+
@@ -102,16 +113,15 @@ server <- shinyServer(function(input, output) {
       scale_colour_brewer(palette = "Set2", name="Mutant Status")
     }, width = 900, height = 450)
   
-  output$mutable <- renderDataTable({
-    mutreact() %>% group_by(gene, mutant) %>% summarize(meanlog1plus=mean(log(1+tagcount)), sdlog1plus=sd(log(1+tagcount)))
-  })
-  
-  output$presult <- renderTable({
-    print <- mutreact() %>% select(id,mutant) %>% unique() %>% group_by(mutant) %>% tally() %>% data.frame()
+  # create a table for # of patients w/ different mutations
+  output$table <- renderTable({
+    print <- mutreact() %>% select(id,mutant) %>% unique() %>% 
+      group_by(mutant) %>% tally() %>% data.frame()
     colnames(print) <- c("Mutated Gene", "# of patients")
-    print
-  })
+    print })
 })
+
+#############################################################################################################################################################
 
 # Run the application 
 shinyApp(ui = ui, server = server)
