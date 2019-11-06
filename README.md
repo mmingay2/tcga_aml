@@ -3,11 +3,15 @@
 
 ### Before Starting
 
-For the app to work you will need to clone the repo, navigate to the repo and then unzip the rnamelt dataset using the following command:
+For the app to work you will need to clone the repo using the following command:
 
-`gzip -d ./rnamelt.txt.gz` 
+`git clone https://github.com/mmingay2/tcga_aml.git`
 
-Once this is done you can open the app.R file in RStudio:
+Once this is done navigate to the repo with: 
+
+`cd tcga_aml`
+
+Then, from RStudio open the app.R file:
 
 ![open file](https://github.com/mmingay2/tcga_aml/blob/master/img/openfile.png "Open File")
 
@@ -18,7 +22,7 @@ Then click the "run app" button in the top right hand corner to see the app in a
 
 Make sure you have [RStudio](https://rstudio.com/products/rstudio/download/) the proper libraries installed! These are listed and loaded on lines 1-9 in the `app.R` file. 
 
-For example one could install the package `dplyr` by running `install.packages("dplyr")` in RStudio.
+For example, one could install the package `dplyr` by running `install.packages("dplyr")` from RStudio's console.
 
 ## See a live example here:
 
