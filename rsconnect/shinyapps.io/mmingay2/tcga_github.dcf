@@ -5,8 +5,9 @@ account: mmingay2
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 175594
-bundleId: 2569577
+bundleId: 2569584
 url: https://mmingay2.shinyapps.io/tcga_github/
-when: 1573076186.00702
+when: 1573076379.33615
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: README.md|img/openfile.png|img/runapp.png
