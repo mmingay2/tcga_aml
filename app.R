@@ -1,12 +1,12 @@
+#install.packages(c("shiny", "shinydashboard", "ggplot2", "shinythemes", "tidyverse", "reshape2", "data.table"))
+#install.packages("tidyverse")
 library(shiny)
 library(shinydashboard)
-library(datasets)
 library(ggplot2)
 library(shinythemes)
-library(tidyr)
+library(tidyverse)
 library(reshape2)
 library(data.table)
-library(dplyr)
 
 #############################################################################################################################################################
 #load datasets
