@@ -2,7 +2,7 @@
 
 ### See a live example here:
 
-https://mmingay2.shinyapps.io/tcga_github/
+https://mmingay2.shinyapps.io/tcga_aml/
 
 --- 
 
